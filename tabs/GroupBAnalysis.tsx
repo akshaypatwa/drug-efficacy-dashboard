@@ -1,5 +1,5 @@
 import React from 'react';
-import type { SingleGroupAnalysis } from '../types';
+import type { SingleGroupAnalysis, Theme } from '../types';
 import { SYMPTOM_NAMES, SymptomKey } from '../constants';
 import { StatCard } from '../components/StatCard';
 import { UricAcidChart } from '../components/UricAcidChart';
@@ -11,16 +11,17 @@ import { TrendingUpIcon } from '../components/icons/TrendingUpIcon';
 
 interface GroupBAnalysisProps {
     data: SingleGroupAnalysis;
+    theme: Theme;
 }
 
 const SymptomStat: React.FC<{ stat: SymptomImprovementStat }> = ({ stat }) => (
-     <div className="flex justify-between items-baseline py-2 border-b border-orange-200/50 last:border-b-0">
-        <span className="text-sm font-medium text-slate-600">{stat.symptomName}</span>
-        <span className="text-base font-semibold text-orange-700">{stat.improvementPercentage}%</span>
+     <div className="flex justify-between items-baseline py-2 border-b border-orange-200/50 dark:border-orange-900/50 last:border-b-0">
+        <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{stat.symptomName}</span>
+        <span className="text-base font-semibold text-orange-700 dark:text-orange-400">{stat.improvementPercentage}%</span>
     </div>
 );
 
-export const GroupBAnalysis: React.FC<GroupBAnalysisProps> = ({ data }) => {
+export const GroupBAnalysis: React.FC<GroupBAnalysisProps> = ({ data, theme }) => {
     return (
         <div className="space-y-6">
             <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -45,6 +46,7 @@ export const GroupBAnalysis: React.FC<GroupBAnalysisProps> = ({ data }) => {
                     data={[data.uricAcidChartData]} 
                     title="Group B: Uric Acid Before vs. After"
                     isComparison={false}
+                    theme={theme}
                 />
                 <ChartCard title="Group B: Symptom Improvement (%)" className="lg:col-span-1" chartHeight="auto">
                     <div className="space-y-1">
@@ -62,6 +64,7 @@ export const GroupBAnalysis: React.FC<GroupBAnalysisProps> = ({ data }) => {
                         title={`Group B: ${SYMPTOM_NAMES[key]}`} 
                         data={data.symptomChartData[key]}
                         group="B"
+                        theme={theme}
                     />
                 ))}
             </section>

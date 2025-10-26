@@ -8,16 +8,16 @@ interface StatsSummaryCardProps {
 }
 
 const StatItem: React.FC<{ label: string; value: string | number }> = ({ label, value }) => (
-    <div className="flex justify-between items-baseline py-2 border-b border-slate-200/80 last:border-b-0">
-        <span className="text-sm font-medium text-slate-500">{label}</span>
-        <span className="text-base font-semibold text-slate-800">{value}</span>
+    <div className="flex justify-between items-baseline py-2 border-b border-slate-200/80 dark:border-slate-700 last:border-b-0">
+        <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</span>
+        <span className="text-base font-semibold text-slate-800 dark:text-slate-200">{value}</span>
     </div>
 );
 
 export const StatsSummaryCard: React.FC<StatsSummaryCardProps> = ({ title, data, color }) => {
   return (
-    <div className="bg-gradient-to-br from-white to-slate-50/80 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200/80 flex flex-col">
-      <h3 className="text-md font-semibold text-slate-800 mb-3 tracking-tight border-l-4 pl-2" style={{ borderColor: color }}>
+    <div className="bg-gradient-to-br from-white to-slate-50/80 dark:from-slate-800 dark:to-slate-900/80 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col">
+      <h3 className="text-md font-semibold text-slate-800 dark:text-slate-200 mb-3 tracking-tight border-l-4 pl-2" style={{ borderColor: color }}>
         {title}
       </h3>
       <div className="space-y-1">

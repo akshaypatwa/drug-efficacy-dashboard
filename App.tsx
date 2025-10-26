@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { rawData } from './data/patientData';
-import type { RawPatientData, DashboardFilters } from './types';
+import type { RawPatientData, DashboardFilters, Theme } from './types';
 import { processPatientData, analyzeData, getFilterOptions } from './utils/analysis';
 
 import { DashboardFiltersComponent } from './components/DashboardFilters';
@@ -10,12 +10,22 @@ import { GroupAAnalysis } from './tabs/GroupAAnalysis';
 import { GroupBAnalysis } from './tabs/GroupBAnalysis';
 import { ComparisonAnalysisTab } from './tabs/ComparisonAnalysis';
 import { UserCircleIcon } from './components/icons/UserCircleIcon';
+import { ThemeToggle } from './components/ThemeToggle';
 
 type Tab = 'groupA' | 'groupB' | 'comparison';
 
 const App: React.FC = () => {
     const [activeTab, setActiveTab] = useState<Tab>('comparison');
     const [filters, setFilters] = useState<DashboardFilters>({ prakruti: 'All', diet: 'All' });
+    const [theme, setTheme] = useState<Theme>('light');
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     const processedData = useMemo(() => processPatientData(rawData as RawPatientData[]), []);
     
@@ -30,7 +40,7 @@ const App: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-100/80 font-sans">
+        <div className="min-h-screen bg-slate-100/80 dark:bg-slate-950 font-sans">
             <main className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
                  <header className="bg-slate-900 rounded-2xl shadow-2xl p-6 mb-8 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 to-slate-900">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -43,7 +53,10 @@ const App: React.FC = () => {
                             </div>
                         </div>
                         <div className="w-full md:w-auto flex flex-col gap-4">
-                             <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                             <div className="flex items-stretch gap-2">
+                                <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                                <ThemeToggle theme={theme} setTheme={setTheme} />
+                             </div>
                              <DashboardFiltersComponent options={filterOptions} filters={filters} onFilterChange={setFilters} />
                         </div>
                     </div>
@@ -58,9 +71,9 @@ const App: React.FC = () => {
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
                         >
-                            {activeTab === 'groupA' && <GroupAAnalysis data={analysisResults.groupA} />}
-                            {activeTab === 'groupB' && <GroupBAnalysis data={analysisResults.groupB} />}
-                            {activeTab === 'comparison' && <ComparisonAnalysisTab data={analysisResults.comparison} demographics={analysisResults.demographics} groupAStats={analysisResults.groupA.uricAcidStats} groupBStats={analysisResults.groupB.uricAcidStats}/>}
+                            {activeTab === 'groupA' && <GroupAAnalysis data={analysisResults.groupA} theme={theme} />}
+                            {activeTab === 'groupB' && <GroupBAnalysis data={analysisResults.groupB} theme={theme} />}
+                            {activeTab === 'comparison' && <ComparisonAnalysisTab data={analysisResults.comparison} demographics={analysisResults.demographics} groupAStats={analysisResults.groupA.uricAcidStats} groupBStats={analysisResults.groupB.uricAcidStats} theme={theme}/>}
                         </motion.div>
                     </AnimatePresence>
                 </div>

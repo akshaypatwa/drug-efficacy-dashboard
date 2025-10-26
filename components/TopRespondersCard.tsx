@@ -10,8 +10,8 @@ interface TopRespondersCardProps {
 }
 
 const ResponderList: React.FC<{ title: string; responders: TopResponder[]; color: 'teal' | 'orange' }> = ({ title, responders, color }) => {
-    const textColor = color === 'teal' ? 'text-teal-600' : 'text-orange-600';
-    const borderColor = color === 'teal' ? 'border-teal-200' : 'border-orange-200';
+    const textColor = color === 'teal' ? 'text-teal-600 dark:text-teal-400' : 'text-orange-600 dark:text-orange-400';
+    const borderColor = color === 'teal' ? 'border-teal-200 dark:border-teal-900' : 'border-orange-200 dark:border-orange-900';
 
     return (
         <div>
@@ -19,7 +19,7 @@ const ResponderList: React.FC<{ title: string; responders: TopResponder[]; color
             <ul className="space-y-2">
                 {responders.map((responder) => (
                     <li key={responder.id} className={`flex justify-between items-center p-2 rounded-md border-b ${borderColor}`}>
-                        <span className="text-sm font-medium text-slate-700">Patient #{responder.id}</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Patient #{responder.id}</span>
                         <span className={`text-sm font-bold ${textColor}`}>
                             {responder.reduction} mg%
                         </span>

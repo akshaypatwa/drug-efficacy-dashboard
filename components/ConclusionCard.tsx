@@ -23,12 +23,12 @@ const StatProgressBar: React.FC<{
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-1 text-sm">
-                <span className="font-semibold text-slate-700">{label}</span>
+                <span className="font-semibold text-slate-700 dark:text-slate-300">{label}</span>
                 <span className={`font-bold ${colorClasses}`}>{value.toFixed(2)}{unit}</span>
             </div>
-            <div className="w-full bg-slate-200 rounded-full h-2.5">
+            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
                 <motion.div
-                    className={`h-2.5 rounded-full ${colorClasses.replace('text-', 'bg-')}`}
+                    className={`h-2.5 rounded-full ${colorClasses.replace('text-', 'bg-').replace('dark:text-','dark:bg-')}`}
                     initial={{ width: 0 }}
                     whileInView={{ width: `${percentage}%` }}
                     viewport={{ once: true, amount: 0.8 }}
@@ -50,30 +50,30 @@ const MetricVerdictCard: React.FC<{
 }> = ({ title, IconComponent, unit, winner, valueA, valueB, max }) => {
     
     const groupAStyles = winner === 'A'
-        ? 'shadow-[0_0_25px_rgba(20,184,166,0.4)] border-teal-500 bg-gradient-to-br from-teal-50 to-white'
-        : 'border-teal-400 bg-gradient-to-br from-white to-slate-50/80 shadow-md';
+        ? 'shadow-[0_0_25px_rgba(20,184,166,0.4)] border-teal-500 bg-gradient-to-br from-teal-50 to-white dark:from-teal-950/50 dark:to-slate-800'
+        : 'border-teal-400 dark:border-teal-800 bg-gradient-to-br from-white to-slate-50/80 dark:from-slate-800 dark:to-slate-900/50 shadow-md';
 
     const groupBStyles = winner === 'B'
-        ? 'shadow-[0_0_25px_rgba(249,115,22,0.4)] border-orange-500 bg-gradient-to-br from-orange-50 to-white'
-        : 'border-orange-400 bg-gradient-to-br from-white to-slate-50/80 shadow-md';
+        ? 'shadow-[0_0_25px_rgba(249,115,22,0.4)] border-orange-500 bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/50 dark:to-slate-800'
+        : 'border-orange-400 dark:border-orange-800 bg-gradient-to-br from-white to-slate-50/80 dark:from-slate-800 dark:to-slate-900/50 shadow-md';
     
-    const iconColor = title === 'Uric Acid Reduction' ? 'text-indigo-600' : 'text-emerald-600';
+    const iconColor = title === 'Uric Acid Reduction' ? 'text-indigo-600 dark:text-indigo-400' : 'text-emerald-600 dark:text-emerald-400';
 
     return (
-        <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-slate-200/90 w-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border-2 border-slate-200/90 dark:border-slate-700 w-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full">
             <div className="flex items-center space-x-4 mb-6">
-                <div className={`p-3 rounded-full bg-slate-100`}>
+                <div className={`p-3 rounded-full bg-slate-100 dark:bg-slate-700`}>
                     <IconComponent className={`w-8 h-8 ${iconColor}`}/>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-800 tracking-tight">{title}</h3>
+                <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">{title}</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 flex-grow mb-6">
                  {/* Group A Card */}
                 <div className={`relative p-5 rounded-xl border-2 text-center transition-all duration-300 flex flex-col justify-center ${groupAStyles}`}>
                     {winner === 'A' && <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-bold text-white bg-teal-500 rounded-full shadow-md">WINNER</div>}
-                    <p className="text-base font-bold text-slate-500 tracking-wider">GROUP A</p>
-                    <div className="text-5xl font-extrabold text-teal-600 my-2 flex items-baseline justify-center">
+                    <p className="text-base font-bold text-slate-500 dark:text-slate-400 tracking-wider">GROUP A</p>
+                    <div className="text-5xl font-extrabold text-teal-600 dark:text-teal-400 my-2 flex items-baseline justify-center">
                         <AnimatedCounter to={valueA} />
                         <span className="text-2xl font-semibold ml-1">{unit}</span>
                     </div>
@@ -81,17 +81,17 @@ const MetricVerdictCard: React.FC<{
                  {/* Group B Card */}
                 <div className={`relative p-5 rounded-xl border-2 text-center transition-all duration-300 flex flex-col justify-center ${groupBStyles}`}>
                     {winner === 'B' && <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-bold text-white bg-orange-500 rounded-full shadow-md">WINNER</div>}
-                    <p className="text-base font-bold text-slate-500 tracking-wider">GROUP B</p>
-                     <div className="text-5xl font-extrabold text-orange-600 my-2 flex items-baseline justify-center">
+                    <p className="text-base font-bold text-slate-500 dark:text-slate-400 tracking-wider">GROUP B</p>
+                     <div className="text-5xl font-extrabold text-orange-600 dark:text-orange-400 my-2 flex items-baseline justify-center">
                         <AnimatedCounter to={valueB} />
                         <span className="text-2xl font-semibold ml-1">{unit}</span>
                     </div>
                 </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-slate-200/80">
-                <StatProgressBar label="Group A Performance" value={valueA} max={max} colorClasses="text-teal-600" unit={unit}/>
-                <StatProgressBar label="Group B Performance" value={valueB} max={max} colorClasses="text-orange-600" unit={unit}/>
+            <div className="space-y-4 pt-4 border-t border-slate-200/80 dark:border-slate-700">
+                <StatProgressBar label="Group A Performance" value={valueA} max={max} colorClasses="text-teal-600 dark:text-teal-400" unit={unit}/>
+                <StatProgressBar label="Group B Performance" value={valueB} max={max} colorClasses="text-orange-600 dark:text-orange-400" unit={unit}/>
             </div>
         </div>
     );
@@ -111,7 +111,7 @@ export const ConclusionCard: React.FC<ConclusionCardProps> = ({
     return (
         <div>
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tighter sm:text-4xl">The Verdict</h2>
+                <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tighter sm:text-4xl">The Verdict</h2>
             </div>
             
             <motion.div 

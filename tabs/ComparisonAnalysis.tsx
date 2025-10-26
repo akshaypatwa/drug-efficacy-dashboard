@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { ComparisonAnalysis, DemographicsData, UricAcidStats } from '../types';
+import type { ComparisonAnalysis, DemographicsData, UricAcidStats, Theme } from '../types';
 import { UricAcidChart } from '../components/UricAcidChart';
 import { SymptomImprovementHeatmap } from '../components/SymptomImprovementHeatmap';
 import { UricAcidReductionDistributionChart } from '../components/UricAcidReductionDistributionChart';
@@ -24,12 +24,13 @@ interface ComparisonAnalysisTabProps {
     };
     groupAStats: UricAcidStats;
     groupBStats: UricAcidStats;
+    theme: Theme;
 }
 
 const SectionHeader: React.FC<{title: string, icon: React.ReactNode}> = ({title, icon}) => (
     <div className="flex items-center space-x-3 mb-4">
-        <div className="bg-white p-2 rounded-lg shadow-sm">{icon}</div>
-        <h2 className="text-2xl font-bold text-slate-800 relative">
+        <div className="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm">{icon}</div>
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 relative">
             {title}
             <span className="absolute -bottom-1.5 left-0 w-1/3 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></span>
         </h2>
@@ -37,7 +38,7 @@ const SectionHeader: React.FC<{title: string, icon: React.ReactNode}> = ({title,
 );
 
 
-export const ComparisonAnalysisTab: React.FC<ComparisonAnalysisTabProps> = ({ data, demographics, groupAStats, groupBStats }) => {
+export const ComparisonAnalysisTab: React.FC<ComparisonAnalysisTabProps> = ({ data, demographics, groupAStats, groupBStats, theme }) => {
     
     const groupAAvgSymptomReduction = data.symptomHeatmapData.length > 0 ? data.symptomHeatmapData.reduce((acc, s) => acc + s['Group A'], 0) / data.symptomHeatmapData.length : 0;
     const groupBAvgSymptomReduction = data.symptomHeatmapData.length > 0 ? data.symptomHeatmapData.reduce((acc, s) => acc + s['Group B'], 0) / data.symptomHeatmapData.length : 0;
@@ -71,8 +72,8 @@ export const ComparisonAnalysisTab: React.FC<ComparisonAnalysisTabProps> = ({ da
             <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.5 }}>
                  <SectionHeader title="Comparative Uric Acid Analysis" icon={<TestTubeIcon className="w-6 h-6 text-indigo-600"/>} />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-                    <UricAcidChart data={data.uricAcidChartData} title="Average Uric Acid Levels: Before & After" isComparison={true} />
-                    <UricAcidReductionDistributionChart data={data.uricAcidReductionDistribution} />
+                    <UricAcidChart data={data.uricAcidChartData} title="Average Uric Acid Levels: Before & After" isComparison={true} theme={theme} />
+                    <UricAcidReductionDistributionChart data={data.uricAcidReductionDistribution} theme={theme}/>
                 </div>
             </motion.section>
 
@@ -96,9 +97,9 @@ export const ComparisonAnalysisTab: React.FC<ComparisonAnalysisTabProps> = ({ da
              <motion.section initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.5 }}>
                  <SectionHeader title="Patient Demographics" icon={<UsersIcon className="w-6 h-6 text-indigo-600"/>} />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                    <DemographicsChart className="min-h-[420px]" title="Distribution by PRAKRUTI" data={demographics.prakruti} />
-                    <DemographicsChart className="min-h-[420px]" title="Distribution by Diet" data={demographics.diet} />
-                    <DemographicsChart className="min-h-[420px]" title="Distribution by Addiction" data={demographics.addiction} />
+                    <DemographicsChart className="min-h-[420px]" title="Distribution by PRAKRUTI" data={demographics.prakruti} theme={theme}/>
+                    <DemographicsChart className="min-h-[420px]" title="Distribution by Diet" data={demographics.diet} theme={theme} />
+                    <DemographicsChart className="min-h-[420px]" title="Distribution by Addiction" data={demographics.addiction} theme={theme} />
                 </div>
             </motion.section>
 

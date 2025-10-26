@@ -160,3 +160,5 @@ export interface DashboardFilters {
     prakruti: 'All' | string;
     diet: 'All' | string;
 }
+
+export type Theme = 'light' | 'dark';
