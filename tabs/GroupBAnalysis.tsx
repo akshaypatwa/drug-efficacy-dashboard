@@ -1,0 +1,70 @@
+import React from 'react';
+import type { SingleGroupAnalysis } from '../types';
+import { SYMPTOM_NAMES, SymptomKey } from '../constants';
+import { StatCard } from '../components/StatCard';
+import { UricAcidChart } from '../components/UricAcidChart';
+import { SymptomLineChart } from '../components/SymptomLineChart';
+import { ChartCard } from '../components/ChartCard';
+import { SymptomImprovementStat } from '../types';
+import { TestTubeIcon } from '../components/icons/TestTubeIcon';
+import { TrendingUpIcon } from '../components/icons/TrendingUpIcon';
+
+interface GroupBAnalysisProps {
+    data: SingleGroupAnalysis;
+}
+
+const SymptomStat: React.FC<{ stat: SymptomImprovementStat }> = ({ stat }) => (
+     <div className="flex justify-between items-baseline py-2 border-b border-orange-200/50 last:border-b-0">
+        <span className="text-sm font-medium text-slate-600">{stat.symptomName}</span>
+        <span className="text-base font-semibold text-orange-700">{stat.improvementPercentage}%</span>
+    </div>
+);
+
+export const GroupBAnalysis: React.FC<GroupBAnalysisProps> = ({ data }) => {
+    return (
+        <div className="space-y-6">
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <StatCard 
+                    title="Uric Acid Mean Reduction" 
+                    value={`${data.uricAcidStats.mean} mg%`} 
+                    description={`Based on ${data.patientCount} patients in this group.`}
+                    color="orange"
+                    icon={<TestTubeIcon />}
+                />
+                 <StatCard 
+                    title="Patients with Uric Acid Improvement" 
+                    value={`${data.uricAcidStats.percentImproved}%`} 
+                    description={`${(data.uricAcidStats.percentImproved / 100 * data.patientCount).toFixed(0)} out of ${data.patientCount} patients showed reduction.`}
+                    color="orange"
+                    icon={<TrendingUpIcon />}
+                />
+            </section>
+            
+             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                 <UricAcidChart 
+                    data={[data.uricAcidChartData]} 
+                    title="Group B: Uric Acid Before vs. After"
+                    isComparison={false}
+                />
+                <ChartCard title="Group B: Symptom Improvement (%)" className="lg:col-span-1" chartHeight="auto">
+                    <div className="space-y-1">
+                        {data.symptomImprovementStats.map(stat => (
+                            <SymptomStat key={stat.symptomName} stat={stat} />
+                        ))}
+                    </div>
+                </ChartCard>
+            </section>
+
+             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {(Object.keys(SYMPTOM_NAMES) as SymptomKey[]).map(key => (
+                    <SymptomLineChart 
+                        key={key} 
+                        title={`Group B: ${SYMPTOM_NAMES[key]}`} 
+                        data={data.symptomChartData[key]}
+                        group="B"
+                    />
+                ))}
+            </section>
+        </div>
+    );
+};

@@ -1,0 +1,5 @@
+{
+  "name": "Drug Efficacy Dashboard",
+  "description": "An interactive dashboard to analyze and compare the efficacy of two drug groups (Group A vs. Group B) based on patient data, visualizing Uric Acid levels, symptom improvements, and patient demographics.",
+  "requestFramePermissions": []
+}
